@@ -93,7 +93,21 @@ public class DAOProducto implements IDAOGeneral<Producto>{
 
     @Override
     public List<Producto> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            sf = HibernateUtil.getSessionFactory();
+            session = sf.getCurrentSession();
+            tra = session.beginTransaction();
+            List<Producto> list = 
+                    session.createQuery("from producto", 
+                            Producto.class).list();
+            tra.commit();
+            return list;
+        } catch(HibernateException e){
+            if (tra != null) {
+                tra.rollback();
+            }
+            return null;
+        }  
     }
     
 }

@@ -17,6 +17,6 @@
     <property name="show_sql">true</property>
     <property name="format_sql">true</property>
     <property name="hbm2ddl.auto">none</property>
-    <mapping class="org.uv.dapp01tarea01v4.PojoEmpleado"/>
+    <mapping class="org.uv.bdnctarea01v2.Producto"/>
   </session-factory>
 </hibernate-configuration>

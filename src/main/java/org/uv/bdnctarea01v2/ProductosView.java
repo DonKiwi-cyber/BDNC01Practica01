@@ -4,7 +4,11 @@
  */
 package org.uv.bdnctarea01v2;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,13 +16,40 @@ import javax.swing.JOptionPane;
  */
 public class ProductosView extends javax.swing.JInternalFrame {
 
+    private DAOProducto daoE = new DAOProducto();
+    private ProductoTableModel<Producto> pro = null;
+
     /**
      * Creates new form ProductosView
      */
     public ProductosView() {
         initComponents();
+
+        List<Producto> list = daoE.findAll();
+        String[] columnNames = {"clave", "nombre", "precio compra", "precio venta"};
+        pro = new ProductoTableModel<Producto>(columnNames,list) {
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                switch (columnIndex) {
+                    case 0:
+                        return list.get(rowIndex).getId();
+                    case 1:
+                        return list.get(rowIndex).getDescripcion();
+                    case 2:
+                        return list.get(rowIndex).getPrecioCompra();
+                    case 3:
+                        return list.get(rowIndex).getPrecioVenta();
+                    default:
+                        return null;
+                }
+            }
+        };
+        jTable1.setModel(pro);
     }
 
+//    private void fillTable(){
+//        
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,6 +67,7 @@ public class ProductosView extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btnGuardar = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
         btnCancelar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -84,6 +116,7 @@ public class ProductosView extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btnGuardar);
+        jToolBar1.add(jSeparator4);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setFocusable(false);
@@ -141,10 +174,9 @@ public class ProductosView extends javax.swing.JInternalFrame {
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                .addComponent(txtPrecioVenta, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtPrecioCompra, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(txtPrecioVenta)
+                            .addComponent(txtPrecioCompra)
                             .addComponent(txtClave, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                         .addGap(66, 66, 66)
                         .addComponent(jButton1))
@@ -195,13 +227,13 @@ public class ProductosView extends javax.swing.JInternalFrame {
         p.setId(Integer.parseInt(txtClave.getText()));
         p.setDescripcion(txtDescripcion.getText());
         p.setPrecioVenta(Double.parseDouble(txtPrecioVenta.getText()));
-        p.setPrecioCompra(Double.parseDouble(jLabel.getText()));
-        
+        p.setPrecioCompra(Double.parseDouble(txtPrecioCompra.getText()));
+
         DAOProducto daoP = new DAOProducto();
         boolean res = daoP.guardar(p);
-        if(res){
+        if (res) {
             JOptionPane.showMessageDialog(this, "Se guardó");
-        } else{
+        } else {
             JOptionPane.showMessageDialog(this, "Error al guardar");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -224,6 +256,7 @@ public class ProductosView extends javax.swing.JInternalFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTextField txtClave;

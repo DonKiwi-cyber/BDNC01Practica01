@@ -4,15 +4,41 @@
  */
 package org.uv.bdnctarea01v2;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 /**
  *
  * @author ian
  */
+@Entity(name = "empleado")
 public class Empleado {
+    
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, 
+            generator = "empleado_id_seq")
+    @SequenceGenerator(name = "empleado_id_seq",
+            sequenceName = "empleado_id_seq",
+            initialValue = 1,
+            allocationSize = 1)
     private long id;
+    
+    @Column(name = "nombre")
     private String nombre;
+    
+    @Column(name = "direccion")
     private String direccion;
+    
+    @Column(name = "telefono")
     private String telefono;
+    
+    @Column(name = "departamento")
     private long departamento;
 
     public long getId() {
